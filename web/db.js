@@ -44,21 +44,14 @@ highlightSchema.methods.upvote = function(){
     vote: 1
   }
   this.votes.push(newVote);
-  this.save();
-//  this.save(callback); 
-/*  {id: 1},
-  { 
-    $push:{ votes: {ip: "127.12.124", vote: 1 } } 
-  } 
-  );
-*/  console.log('tried to add');
+  this.save(); 
 }
 
 var highlight = mongoose.model('highlightCollection', highlightSchema);
 
 var highlight1 = new highlight({streamLink: 'twitch.tv/riotgames', 
                                 beginTime: 0, 
-                    		endTime: 10
+                    		        endTime: 10
 });
 
 highlight1.upvote();
