@@ -14,7 +14,7 @@ function getClientIp(req){// currently not working
 };
 
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://104.131.233.104:27017'); //replace with the proper host
+mongoose.connect('mongodb://104.131.233.104:27017/streamingdb', db); //replace with the proper host
 
 //var databaseUrl = 'mongodb://104.131.233.104:27017';
 var collections = ['streamhl'];
