@@ -15,11 +15,22 @@ var highlightSchema = mongoose.Schema({
   streamLink: String,
   beginTime: Number,
   endTime: Number,
-  votes: {
-    up: Number,
-    down: Number,
-    ip: String
-  } 
+  votes: [{
+    ip: String,
+    vote: Number //-1 for down, 0 for neutral, and 1 for up
+  }] 
 });
 
-var highlightCollection = mongoose.model('highlightCollection', highlightSchema);
+highlightSchema.methods.upvote = function(){
+  var newVote = {
+    ip: request.connection.remoteAddress,
+    vote: 1
+  }
+
+  db.collection.update( 
+    {id: this.id},
+    { $push:{'votes.$.items': newVote} } 
+  );
+}
+
+var highlight = mongoose.model('highlightCollection', highlightSchema);
