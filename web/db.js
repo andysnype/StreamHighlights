@@ -47,6 +47,26 @@ highlightSchema.methods.upvote = function(){
   this.save(); 
 }
 
+highlightSchema.methods.modify = function modify(number){
+  if(number == null){
+    console.log("nothing to modify to. pass in argument.");
+    return;
+  }
+  if(number != 0 && number != 1  && number != -1)
+  {
+    console.log("invalid value to upvote/downvote. everyone is treated equally.");
+    return;
+  }
+  var newVote = {
+    ip: "1.1.1.1",
+    vote: number
+  }
+  this.votes.push(newVote);
+  this.save();
+  console.log("modified this vote to new vote: " + number);
+}
+
+
 var highlight = mongoose.model('highlightCollection', highlightSchema);
 
 var highlight1 = new highlight({streamLink: 'twitch.tv/riotgames', 
@@ -61,6 +81,11 @@ highlight1.save(function (err, highlight1){
 });
 
 highlight.upvote;
+
+highlight1.modify(0);
+highlight1.modify(1);
+highlight1.modify(-1);
+highlight1.modify(-0.4);
 
 highlight.find({beginTime: 0}, function(err, highlights){
   if (err) return console.error(err);
