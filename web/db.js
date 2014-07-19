@@ -18,7 +18,7 @@ mongoose.connect('mongodb://104.131.233.104:27017'); //replace with the proper h
 
 //var databaseUrl = 'mongodb://104.131.233.104:27017';
 var collections = ['streamhl'];
-var db = mongoose.connection
+var db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function callback(){
@@ -35,24 +35,30 @@ var highlightSchema = mongoose.Schema({
   }] 
 });
 
+//Make a highlight model using the highlightSchema
+var Highlight = mongoose.model('Highlight', highlightSchema);
+
 highlightSchema.methods.upvote = function(){
   var newVote = {
-    ip: '1.1.1.1',
+    ip: "1.1.1.1",
     vote: 1
   }
-
-  db.collection.update( 
-    {id: 1},
-    { $push:  } 
+  this.votes.push(newVote);
+  this.save();
+//  this.save(callback); 
+/*  {id: 1},
+  { 
+    $push:{ votes: {ip: "127.12.124", vote: 1 } } 
+  } 
   );
-  console.log('tried to add');
+*/  console.log('tried to add');
 }
 
 var highlight = mongoose.model('highlightCollection', highlightSchema);
 
 var highlight1 = new highlight({streamLink: 'twitch.tv/riotgames', 
                                 beginTime: 0, 
-                                endTime: 10
+                    		endTime: 10
 });
 
 highlight1.upvote();
