@@ -9,9 +9,7 @@ router.get('/', function(req, res) {
   var options = {
     host: 'api.twitch.tv',
     port: 443,
-    path: '/kraken/channels/riotgames/videos', // change to take as var
-    //broadcasts: true,
-    //limit: 10,
+    path: '/kraken/channels/riotgames/videos?broadcasts=true', // change to take as var
     method: 'GET'
   }
 

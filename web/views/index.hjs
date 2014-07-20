@@ -8,6 +8,11 @@
     <h1>{{ title }}</h1>
     <p>Welcome to {{ title }}</p>
     <h2>Twitch Response</h2>
+    <script type='text/javascript'>
+      var json = {{ streams }},
+        obj = JSON.parse(json);
+      alert(obj.videos[0].title);
+    </script>
     <p>{{ streams }}</p>
   </body>
 </html>
