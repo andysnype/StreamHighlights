@@ -9,16 +9,16 @@ router.get('/', function(req, res) {
   var options = {
     host: 'api.twitch.tv',
     port: 443,
-    path: '/kraken/channels/riotgames', // change to take as var
-    broadcasts: true,
-    limit: 10,
+    path: '/kraken/channels/riotgames/videos', // change to take as var
+    //broadcasts: true,
+    //limit: 10,
     method: 'GET'
   }
 
   // sends the request to the server
   var req = https.request(options, function(res){
-    console.log('STATUS: ' + res.statusCode);
-    console.log('HEADERS: ' + JSON.stringify(res.headers));
+    //console.log('STATUS: ' + res.statusCode);
+    //console.log('HEADERS: ' + JSON.stringify(res.headers));
     res.setEncoding('utf8');
     res.on('data', function(chunk) {
       twitchResponse = chunk
