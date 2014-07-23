@@ -1,3 +1,5 @@
+var includes = require('./includes');
+
 // from github.com/qiao
 function getClientIp(req){// currently not working
   var ipAddress;
@@ -14,16 +16,43 @@ function getClientIp(req){// currently not working
 };
 
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://104.131.233.104:27017/streamingdb', db); //replace with the proper host
-
-//var databaseUrl = 'mongodb://104.131.233.104:27017';
-var collections = ['streamhl'];
+var Schema = mongoose.Schema;
+mongoose.connect(includes.databaseUrl, db);
 var db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function callback(){
   // do something
 });
+
+var voteSchema = new Schema({
+  ip: String,
+  vote: Number, //-1 for down, 0 for neutral, and 1 for up
+});
+
+var highlightsSchema = new Schema({
+  streamLink: String,
+  beginTime: Number,
+  endTime: Number,
+  votes: [ voteSchema ]
+});
+
+// takes: vote to be recorded, voter's IP address
+highlightsSchema.methods.vote = function (voteValue, voterIp) {
+  // removes voter's vote if it already exists
+  if (this.votes.find({ ip: voterIp }) != null) {
+    this.votes.pull({ ip: voterIp });
+  }
+  // puts the new vote in the array
+  this.votes.push({ ip: voterIp, vote: voteValue });
+}
+
+module.exports = mongoose.model('highlights', highlightsSchema);
+
+/*
+******************************************
+******** USE FOR REFERENCE ONLY **********
+******************************************
 
 var highlightSchema = mongoose.Schema({
   streamLink: String,
@@ -69,6 +98,8 @@ highlightSchema.methods.modify = function modify(number){
 
 var highlight = mongoose.model('highlightCollection', highlightSchema);
 
+highlight.remove();
+
 var highlight1 = new highlight({streamLink: 'twitch.tv/riotgames', 
                                 beginTime: 0, 
                     		        endTime: 10
@@ -91,3 +122,4 @@ highlight.find({beginTime: 0}, function(err, highlights){
   if (err) return console.error(err);
   console.log(highlights);
 });
+*/
